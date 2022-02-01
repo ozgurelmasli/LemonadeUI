@@ -1,28 +1,235 @@
-# LemonadeUI
+# Untitled
 
-[![Version](https://img.shields.io/cocoapods/v/LemonadeUI.svg?style=flat)](https://cocoapods.org/pods/LemonadeUI)
-[![License](https://img.shields.io/cocoapods/l/LemonadeUI.svg?style=flat)](https://cocoapods.org/pods/LemonadeUI)
-[![Platform](https://img.shields.io/cocoapods/p/LemonadeUI.svg?style=flat)](https://cocoapods.org/pods/LemonadeUI)
+![HeaderImage.jpg](Untitled%20e0c78fd627054dfc8b4306deb0b54114/HeaderImage.jpg)
 
-## Example
+LemonadeUI custom UI library for iOS and OSX.
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+![https://img.shields.io/cocoapods/v/LemonadeUI.svg?style=flat](https://img.shields.io/cocoapods/v/LemonadeUI.svg?style=flat)
 
-## Requirements
+![https://img.shields.io/cocoapods/l/LemonadeUI.svg?style=flat](https://img.shields.io/cocoapods/l/LemonadeUI.svg?style=flat)
 
-## Installation
+![https://img.shields.io/cocoapods/p/LemonadeUI.svg?style=flat](https://img.shields.io/cocoapods/p/LemonadeUI.svg?style=flat)
 
-LemonadeUI is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+## **Requirements**
 
-```ruby
-pod 'LemonadeUI'
+---
+
+- iOS 12.0+ / Mac OS X 10+
+- Xcode 10.0+
+- Swift 5.0+
+
+### **Communication**
+
+---
+
+- If you **found a bug**, open an issue
+- If you **have a feature request**, open an issue.
+- If you **want to contribute**, submit a pull request.
+- If you'd like to **ask a general question , reach me!**
+    - [https://github.com/ozgurelmasli](https://github.com/ozgurelmasli)
+    - [https://twitter.com/ElmasliOzgur](https://twitter.com/ElmasliOzgur)
+
+### **Installation**
+
+---
+
+[CocoaPods](http://cocoapods.org/) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```
+$ gem install cocoapods
 ```
 
-## Author
+To integrate LemonadeUI into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
-Hasan Ozgur Elmasli, ozgur@nektarapps.com
+```
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.0'
+use_frameworks!
 
-## License
+target '<Your Target Name>' do
+	pod 'LemonadeUI'
+end
+```
 
-LemonadeUI is available under the MIT license. See the LICENSE file for more info.
+Then, run the following command:
+
+```
+$ pod install
+```
+
+### Usage
+
+---
+
+- Contraints
+
+```swift
+someView.top(otherView, equalTo: .top, constant: 10, safeArea: true)
+someView.left(otherView, equalTo: .left , constant: 10)
+// ....
+someView.leftAndRight(view , constant: 24)
+// ....
+someView.centerX(otherView, equalTo: .centerX)
+someView.center(to: otherView, width: .screenWidth(24), height: .screenHeight())
+someView.center(to: otherView)
+// ....
+someView.height(constant: 20)
+someView.width(otherView, equalTo: .height, multiplier: 0.8, safeArea: true)
+someView.width(constant: .screenWidth(48))
+// .... 
+someView.fill2SuperView()
+someView.fill2SuperView(.init(right: 10, left: 10, top: 10, bottom: 10))
+```
+
+- Some basic configuration types and functions usages
+
+```swift
+public struct LemonadeBorder {
+    var borderColor : CGColor
+    var borderWidth : CGFloat 
+...
+}
+someView.border(...//LemonadeBorder)
+```
+
+```swift
+public struct LemonadeRadius {
+    var radius : CGFloat
+    var maskedCorners : CACornerMask?
+...
+}
+someView.radius(...//LemonadeRadius)
+```
+
+```swift
+public struct LemonadeGradient {
+    var colors : [CGColor]
+    var from : CGPoint
+    var to   : CGPoint
+    var locations : [NSNumber]?
+...
+}
+someView.gradient(...//LemonadeRadius)
+```
+
+```swift
+public struct LemonadeColor {
+    var backgroundColor : UIColor? = nil
+    var gradient        : LemonadeGradient? = nil
+...
+}
+someView.color(...//LemonadeColor)
+```
+
+```swift
+public struct LemonadeEmptyUI {
+    var image : UIImage?
+    var text  : String
+    var descriptionText : String?
+...
+}
+ someView.emptyUI(...//LemonadeEmptyUI)
+```
+
+- Some basic custom component usages
+
+```swift
+import LemonadeUI
+
+private lazy var lotus : LemonadeLotus = {
+        let config = LemonadeLotusConfig(petal: .systemBlue, numberOfItems: 8, pattern: [
+            .init(duration: 3, position: .sleep),
+            .init(duration: 4, position: .awake),
+            .init(duration: 1, position: .sleep),
+            .init(duration: 5, position: .awake),
+        ])
+        let lotus = LemonadeLotus(frame: .zero, config)
+        lotus.lotusDelegate = self
+        return lotus
+    }()
+....
+
+extension ExampleVC: LemonadeLotusDelegate {
+    func actionChanged(_ lotus: LemonadeLotus, action: LemonadeLotusAnimationPatternItem) {
+        print("Action changed -> \(action.position)")
+    }
+    
+    func animationStart(_ lotus: LemonadeLotus) {
+        print("Animate Start")
+    }
+    
+    func animationEnd(_ lotus: LemonadeLotus) {
+        print("Animate Stop")
+    }
+}
+```
+
+```swift
+import LemonadeUI
+
+private lazy var exampleButton: LemonadeButton = {
+        let button: LemonadeButton = .init(frame: .zero, color: .init(backgroundColor: .systemBlue), radius:.init(radius: 8))
+        button.text(.init(text: "Start Pattern", color: .white, font: .systemFont(ofSize: 20), alignment: .center))
+        return button
+    }()
+
+....
+
+private func handlers(){
+        exampleButton.addAction { [weak self] in
+            // actions
+        }
+}
+```
+
+```swift
+import LemonadeUI
+
+private lazy var flower: LemonadeFlower = {
+        let config: LemonadeFlowerConfig = .init(items: [
+            .init(sliceColor: .init(backgroundColor: .systemBlue.withAlphaComponent(0.7)), sliceBorder: .init(borderColor: .black, width: 2.0)),
+            .init(sliceColor: .init(backgroundColor: .systemPink.withAlphaComponent(0.7)), sliceBorder: .init(borderColor: .black, width: 1.0)),
+            .init(sliceColor: .init(backgroundColor: .black.withAlphaComponent(0.7)), sliceBorder: .init(borderColor: .white, width: 2.0), customView: .init(frame: .zero, color: .init(backgroundColor: .orange), radius: .init(radius: 20), border: .init(borderColor: .white, width: 2.0)))
+        ], spacing: 3)
+        let flower: LemonadeFlower = .init(frame: .zero, config)
+        flower.backgroundColor = .clear
+        flower.flowerdelegate = self
+        return flower
+    }()
+
+....
+
+extension ExampleVC: LemonadeFlowerDelegate {
+    func sliceTapped(_ flower: LemonadeFlower, index: Int) {
+        print("Index Tapped -> \(index)")
+    }
+}
+```
+
+### Playground
+
+---
+
+You can try LemonadeUI on Example Project. Just download and run Example Project. 
+
+![Simulator Screen Shot - iPhone 13 Pro Max - 2022-02-02 at 01.17.16.png](Untitled%20e0c78fd627054dfc8b4306deb0b54114/Simulator_Screen_Shot_-_iPhone_13_Pro_Max_-_2022-02-02_at_01.17.16.png)
+
+![Simulator Screen Shot - iPhone 13 Pro Max - 2022-02-02 at 01.16.45.png](Untitled%20e0c78fd627054dfc8b4306deb0b54114/Simulator_Screen_Shot_-_iPhone_13_Pro_Max_-_2022-02-02_at_01.16.45.png)
+
+![Simulator Screen Shot - iPhone 13 Pro Max - 2022-02-02 at 01.16.33.png](Untitled%20e0c78fd627054dfc8b4306deb0b54114/Simulator_Screen_Shot_-_iPhone_13_Pro_Max_-_2022-02-02_at_01.16.33.png)
+
+### **Resources**
+
+---
+
+- [Documentation](https://ozgurelmasli.github.io/lemonadeUI.github.io/)
+
+### **Credits**
+
+---
+
+- Hasan Ozgur Elmasli ([@ElmasliOzgur](https://twitter.com/ElmasliOzgur))
+
+### **License**
+
+LemonadeUI is released under the MIT license. See LICENSE for details.
