@@ -1,5 +1,3 @@
-# Untitled
-
 ![HeaderImage.jpg](Untitled%20e0c78fd627054dfc8b4306deb0b54114/HeaderImage.jpg)
 
 LemonadeUI custom UI library for iOS and OSX.
